@@ -1,16 +1,19 @@
+## Creating Containers
 aws ecr create-repository --repository-name dashboard
 aws ecr create-repository --repository-name payment
 
-
+## Creating Cluster
 eksctl create cluster --name eksdemo --node-type t2.small --nodes 3 --nodes-min 3 --nodes-max 5 --region ap-south-1
 
-
+## Create IAM OIDC provider
 eksctl utils associate-iam-oidc-provider --region ap-south-1 --cluster eksdemo --approve
 
 
+## Create an IAM policy
 curl -o iam_policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.4.1/docs/install/iam_policy.json
 
 
+## Create a IAM role and ServiceAccount
 eksctl create iamserviceaccount \
   --cluster=eksdemo \
   --namespace=kube-system \
@@ -20,18 +23,19 @@ eksctl create iamserviceaccount \
   --approve
 
 
-
+##Add anotation to the SA
 kubectl annotate serviceaccount -n kube-system aws-load-balancer-controller \
     eks.amazonaws.com/sts-regional-endpoints=true  
 
-
+## Install the TargetGroupBinding CRDs
 kubectl apply -k github.com/aws/eks-charts/stable/aws-load-balancer-controller/crds?ref=master
 kubectl get crd    
 
-
-
-
+## Configure AWS ALB (Apllication Load Balancer) to sit infront of Ingress
 helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=eksdemo --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set image.tag="v2.4.1"
 
-
+##Test it
 kubectl -n kube-system rollout status deployment aws-load-balancer-controller
+
+## Get our ingress url 
+kubectl get ingress app-ingress -n app -o=jsonpath="{'http://'}{.status.loadBalancer.ingress[].hostname}{'\n'}"
