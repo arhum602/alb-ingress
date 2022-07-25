@@ -21,14 +21,14 @@ spec:
         app: dasboard-app
     spec:
       containers:
-      - name: dashboard-container
-        image: 573692293734.dkr.ecr.ap-south-1.amazonaws.com/dashboard:latest
-        ports:
+        - name: dashboard-container
+          image: 573692293734.dkr.ecr.ap-south-1.amazonaws.com/dashboard:latest
+          ports:
             - containerPort: 80
-        resources:
-          limits:
-            memory: "100Mi"
-            cpu: "200m"
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,14 +48,14 @@ spec:
         app: payment-app
     spec:
       containers:
-      - name: payment-container
-        image: 573692293734.dkr.ecr.ap-south-1.amazonaws.com/payment:latest
-        ports:
+        - name: payment-container
+          image: 573692293734.dkr.ecr.ap-south-1.amazonaws.com/payment:latest
+          ports:
             - containerPort: 80
-        resources:
-          limits:
-            memory: "100Mi"
-            cpu: "200m"
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "200m"
 ---
 apiVersion: v1
 kind: Service
@@ -104,11 +104,11 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '15'
-    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: '5'
-    alb.ingress.kubernetes.io/success-codes: '200'
-    alb.ingress.kubernetes.io/healthy-threshold-count: '2'
-    alb.ingress.kubernetes.io/unhealthy-threshold-count: '2'
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: "15"
+    alb.ingress.kubernetes.io/healthcheck-timeout-seconds: "5"
+    alb.ingress.kubernetes.io/success-codes: "200"
+    alb.ingress.kubernetes.io/healthy-threshold-count: "2"
+    alb.ingress.kubernetes.io/unhealthy-threshold-count: "2"
 spec:
   rules:
     - http:
@@ -119,7 +119,7 @@ spec:
               service:
                 name: payment-service
                 port:
-                  number: 80                        
+                  number: 80
           - path: /dashboard
             pathType: Prefix
             backend:
