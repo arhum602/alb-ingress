@@ -9,4 +9,4 @@
 
 ![Alt text](<./images/alb-ingress%20(3).jpeg>)
 
-![Alt text](<./images/alb-ingress%20(2).jpeg>)
+![Alt text](<./images/alb-ingress%20(6).jpeg>)
